@@ -1,0 +1,52 @@
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+*.env
+token.md
+insurance_notification_bot_guide.md
+insurance_notification_bot_guide*
+
+# Google API Credentials & Service Accounts
+credentials.json
+*credentials*.json
+!credentials.example.json
+client_secret*.json
+
+# Logs and dynamic JSON data
+sent_log.json
+sent_notifications.json
+*.log
+
+# Large Binaries & Executables
+*.exe
+ngrok.exe
+ngrok
+
+# Python caches and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE & Editor settings
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store

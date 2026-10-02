@@ -1,0 +1,30 @@
+# Environment variables
+.env
+.env.*
+!.env.example
+*.env
+
+# Google API Credentials & Service Accounts
+credentials.json
+*credentials*.json
+!credentials.example.json
+client_secret*.json
+
+# Logs & tracking
+sent_log.json
+sent_notifications.json
+*.log
+
+# Large Binaries & Executables
+*.exe
+ngrok.exe
+ngrok
+
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+.venv/
+env/
