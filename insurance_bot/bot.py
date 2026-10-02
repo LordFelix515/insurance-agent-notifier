@@ -113,8 +113,13 @@ def get_expiring_policies(exact_days=None, max_days=None):
     prev_prim = get_col(10)      # Column K
     expiry_date_str = get_col(13) # Column N
 
-    if not expiry_date_str or not policy_no:
+    if not expiry_date_str:
       continue
+
+    if not policy_no:
+      if not cust_name and not plate and not product:
+        continue
+      policy_no = "-"
 
     raw_date = str(expiry_date_str).replace("\xa0", " ").strip()
     clean_date = raw_date.replace(",", ".").replace("/", ".").replace(" ", "")
