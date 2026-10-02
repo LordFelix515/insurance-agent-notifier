@@ -35,6 +35,7 @@ def run_daily_cron():
         print("HATA: .env dosyasında hiç yetkili numara bulunamadı!")
         return
 
+    import time
     for phone in ALLOWED_NUMBERS:
         print(f"WhatsApp mesajı gönderiliyor -> {phone} ...")
         success = send_whatsapp_message(phone, response_text)
@@ -42,6 +43,7 @@ def run_daily_cron():
             print(f"✅ Mesaj {phone} numarasına başarıyla iletildi!")
         else:
             print(f"❌ HATA: Mesaj {phone} numarasına GÖNDERİLEMEDİ!")
+        time.sleep(1)
 
 if __name__ == "__main__":
     run_daily_cron()

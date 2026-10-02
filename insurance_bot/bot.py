@@ -66,8 +66,14 @@ def send_whatsapp_message(phone, message):
       "type": "text",
       "text": {"body": message},
   }
-  response = requests.post(url, headers=headers, json=payload)
-  return response.status_code == 200
+  try:
+    response = requests.post(url, headers=headers, json=payload, timeout=10)
+    if response.status_code != 200:
+      print(f"❌ Meta API Hatası ({response.status_code}): {response.text}")
+    return response.status_code == 200
+  except Exception as e:
+    print(f"❌ WhatsApp Gönderim Hatası: {e}")
+    return False
 
 
 def get_expiring_policies(exact_days=None, max_days=None):
@@ -110,12 +116,18 @@ def get_expiring_policies(exact_days=None, max_days=None):
     if not expiry_date_str or not policy_no:
       continue
 
-    try:
-      if "." in str(expiry_date_str):
-        expiry_date = datetime.strptime(str(expiry_date_str).strip(), "%d.%m.%Y").date()
-      else:
-        expiry_date = datetime.strptime(str(expiry_date_str).strip(), "%Y-%m-%d").date()
-    except Exception:
+    raw_date = str(expiry_date_str).replace("\xa0", " ").strip()
+    clean_date = raw_date.replace(",", ".").replace("/", ".").replace(" ", "")
+
+    expiry_date = None
+    for fmt in ("%d.%m.%Y", "%Y-%m-%d", "%d-%m-%Y", "%Y.%m.%d", "%d.%m.%y"):
+      try:
+        expiry_date = datetime.strptime(clean_date if "." in fmt else raw_date, fmt).date()
+        break
+      except Exception:
+        continue
+
+    if not expiry_date:
       continue
 
     delta = (expiry_date - today).days
@@ -136,7 +148,7 @@ def get_expiring_policies(exact_days=None, max_days=None):
           "plate": plate,
           "prev_prim": prev_prim,
           "expiry_date": expiry_date,
-          "expiry_date_str": expiry_date_str,
+          "expiry_date_str": expiry_date.strftime("%d.%m.%Y"),
           "days_left": delta
       })
 
